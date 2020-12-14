@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Upload One File</title>
+</head>
+<body>
+<h1>Upload One File</h1>
+<form action="/upload/one-file" th:object="${myFormModel}" method="post" enctype="multipart/form-data">
+    <label th:for="${#ids.next('description')}">Description: </label>
+    <input th:field="*{description}">
+    <br>
+    <label th:for="${#ids.next('files')}">File to upload: </label>
+    <input type="file" th:field="*{files}">
+    <br>
+    <input type="submit" value="Upload">
+</form>
+</body>
+</html>

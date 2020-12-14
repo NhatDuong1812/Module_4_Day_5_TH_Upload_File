@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('javax.servlet:javax.servlet-api:3.1.0')
+    compile('org.springframework:spring-webmvc:4.3.25.RELEASE')
+    compile 'org.thymeleaf:thymeleaf-spring4:3.0.11.RELEASE'
+    compile 'commons-fileupload:commons-fileupload:1.4'
+    compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '1.2'
+}
+
+test {
+    useJUnitPlatform()
+}

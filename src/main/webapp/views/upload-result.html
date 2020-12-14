@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Upload Result</title>
+</head>
+<body>
+<h1>Upload Result</h1>
+<p>Description: <span th:text="${myFormModel.description}"></span></p>
+<ul th:each="file: ${myFormModel.files}">
+    <li th:text="${file.getOriginalFilename()}"></li>
+</ul>
+</body>
+</html>
