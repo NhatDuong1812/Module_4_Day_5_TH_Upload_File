@@ -1,20 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Upload Multi File</title>
+<head th:replace="/layout :: head">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Upload Multi Files</title>
 </head>
 <body>
-<h1>Upload Multi File</h1>
-<form action="/upload/multi-file" th:object="${myFormModel}" method="post" enctype="multipart/form-data">
-    <label th:for="${#ids.next('description')}">Description: </label>
-    <input th:field="*{description}">
-    <br>
-    <label th:for="${#ids.next('files')}">File to upload: </label>
-    <input type="file" th:field="*{files}">
-    <input type="file" th:field="*{files}">
-    <input type="file" th:field="*{files}">
-    <br>
-    <input type="submit" value="Upload">
-</form>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header"><h1 class="display-6">Upload Multi Files <a th:href="@{/}" class="btn btn-primary btn-sm">Back</a></h1></div>
+        <div class="card-body">
+            <form action="/upload/multi-file" th:object="${myFormModel}" method="post" enctype="multipart/form-data">
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label col-form-label-sm">Description: </label>
+                    <div class="col-sm-10">
+                        <input th:field="*{description}" class="form-control form-control-sm" placeholder="Enter description...">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label col-form-label-sm">File to upload (1): </label>
+                    <div class="col-sm-10">
+                        <input type="file" th:field="*{files}" class="form-control form-control-sm">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label col-form-label-sm">File to upload (2): </label>
+                    <div class="col-sm-10">
+                        <input type="file" th:field="*{files}" class="form-control form-control-sm">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label col-form-label-sm">File to upload (3): </label>
+                    <div class="col-sm-10">
+                        <input type="file" th:field="*{files}" class="form-control form-control-sm">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-10 offset-2">
+                        <button class="btn btn-primary" type="submit">Upload</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<footer th:replace="/layout :: footer"></footer>
 </body>
 </html>

@@ -2,12 +2,15 @@ package com.codegym.controller;
 
 import com.codegym.entities.MyFormModel;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/upload")
@@ -29,16 +32,17 @@ public class MyFormController {
     }
 
     @PostMapping("/one-file")
-    public ModelAndView uploadFile(HttpServletRequest request, @ModelAttribute("myFormModel") MyFormModel myFormModel) {
-        return this.doUpload(request, myFormModel);
+    public String uploadFile(HttpServletRequest request, Model model, @ModelAttribute("myFormModel") MyFormModel myFormModel) {
+        return this.doUpload(request, model, myFormModel);
     }
 
     @PostMapping("/multi-file")
-    public ModelAndView uploadMultiFiles(HttpServletRequest request, @ModelAttribute("myFormModel") MyFormModel myFormModel) {
-        return this.doUpload(request, myFormModel);
+    public String uploadMultiFiles(HttpServletRequest request, Model model, @ModelAttribute("myFormModel") MyFormModel myFormModel) {
+        return this.doUpload(request, model, myFormModel);
     }
 
-    private ModelAndView doUpload(HttpServletRequest request, MyFormModel myFormModel) {
+    private String doUpload(HttpServletRequest request, Model model, MyFormModel myFormModel) {
+        Map<File, String> uploadedFiles = new HashMap<>();
         String uploadRootPath = request.getServletContext().getRealPath("uploads");
         File uploadRootDir = new File(uploadRootPath);
         if (!uploadRootDir.exists()) {
@@ -55,16 +59,15 @@ public class MyFormController {
                     stream.write(file.getBytes());
                     stream.flush();
                     stream.close();
-
+                    uploadedFiles.put(writeFile, name);
                     System.out.println("Write file: " + writeFile);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
         }
-        ModelAndView modelAndView = new ModelAndView("upload-result");
-        modelAndView.addObject(
-                "myFormModel", myFormModel);
-        return modelAndView;
+        model.addAttribute("description", myFormModel.getDescription());
+        model.addAttribute("uploadedFiles", uploadedFiles);
+        return "upload-result";
     }
 }
