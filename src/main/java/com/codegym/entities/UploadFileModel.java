@@ -5,14 +5,14 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class MyFormModel implements Serializable {
+public class UploadFileModel implements Serializable {
     private String description;
     private CommonsMultipartFile[] files;
 
-    public MyFormModel() {
+    public UploadFileModel() {
     }
 
-    public MyFormModel(String description, CommonsMultipartFile[] files) {
+    public UploadFileModel(String description, CommonsMultipartFile[] files) {
         this.description = description;
         this.files = files;
     }

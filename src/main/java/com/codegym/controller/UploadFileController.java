@@ -1,6 +1,6 @@
 package com.codegym.controller;
 
-import com.codegym.entities.MyFormModel;
+import com.codegym.entities.UploadFileModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,34 +14,33 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/upload")
-public class MyFormController {
+public class UploadFileController {
 
     @GetMapping("/one-file")
     public ModelAndView uploadFile() {
         ModelAndView modelAndView = new ModelAndView("upload-one-file");
-        modelAndView.addObject("myFormModel", new MyFormModel());
-        System.out.println("Hello");
+        modelAndView.addObject("uploadFileModel", new UploadFileModel());
         return modelAndView;
     }
 
     @GetMapping("/multi-file")
     public ModelAndView uploadMultiFiles() {
         ModelAndView modelAndView = new ModelAndView("upload-multi-file");
-        modelAndView.addObject("myFormModel", new MyFormModel());
+        modelAndView.addObject("uploadFileModel", new UploadFileModel());
         return modelAndView;
     }
 
     @PostMapping("/one-file")
-    public String uploadFile(HttpServletRequest request, Model model, @ModelAttribute("myFormModel") MyFormModel myFormModel) {
-        return this.doUpload(request, model, myFormModel);
+    public String uploadFile(HttpServletRequest request, Model model, @ModelAttribute("uploadFileModel") UploadFileModel uploadFileModel) {
+        return this.doUpload(request, model, uploadFileModel);
     }
 
     @PostMapping("/multi-file")
-    public String uploadMultiFiles(HttpServletRequest request, Model model, @ModelAttribute("myFormModel") MyFormModel myFormModel) {
-        return this.doUpload(request, model, myFormModel);
+    public String uploadMultiFiles(HttpServletRequest request, Model model, @ModelAttribute("uploadFileModel") UploadFileModel uploadFileModel) {
+        return this.doUpload(request, model, uploadFileModel);
     }
 
-    private String doUpload(HttpServletRequest request, Model model, MyFormModel myFormModel) {
+    private String doUpload(HttpServletRequest request, Model model, UploadFileModel uploadFileModel) {
         Map<File, String> uploadedFiles = new HashMap<>();
         String uploadRootPath = request.getServletContext().getRealPath("uploads");
         File uploadRootDir = new File(uploadRootPath);
@@ -49,7 +48,7 @@ public class MyFormController {
             uploadRootDir.mkdir(); // Tạo thư mục uploads nếu chưa có
         }
 
-        CommonsMultipartFile[] files = myFormModel.getFiles();
+        CommonsMultipartFile[] files = uploadFileModel.getFiles();
         for (CommonsMultipartFile file : files) { // Duyệt tất cả files
             String name = file.getOriginalFilename();
             if (name != null && name.length() > 0) {
@@ -59,14 +58,14 @@ public class MyFormController {
                     stream.write(file.getBytes());
                     stream.flush();
                     stream.close();
-                    uploadedFiles.put(writeFile, name);
+                    uploadedFiles.put(writeFile, name); // Gán đường dẫn upload file vào Map
                     System.out.println("Write file: " + writeFile);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
         }
-        model.addAttribute("description", myFormModel.getDescription());
+        model.addAttribute("description", uploadFileModel.getDescription());
         model.addAttribute("uploadedFiles", uploadedFiles);
         return "upload-result";
     }
